@@ -17,6 +17,7 @@ export default {
   },
   methods: {
     getFresh(flightOffer) {
+      if(this.tripType == 'multi') return;
       let unifiedData = [];
       let ptr = 0;
       // Extra space for round trip checkings
@@ -110,11 +111,18 @@ export default {
 </script>
 
 <template>
-  {{ tripType }}
+  {{ tripType === 'round' ? "Please select one way trip!" : "" }}
+  {{ tripType === 'multi' ? "Please select one way trip!" : "" }}
   <div v-for="(flightOffer, x) in flightData" :key="x">
     <div v-for="(fresh, y) in getFresh(flightOffer)" :key="y">
-      {{ fresh }}
+      <Row :item="fresh" />
       <br /><br />
     </div>
-  </div>
+  </div> 
 </template>
+
+<style>
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+</style>

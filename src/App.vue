@@ -12,5 +12,8 @@ export default {
   <Search />
 </template>
 
-<style scoped>
+<style>
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 </style>

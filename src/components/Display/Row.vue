@@ -8,3 +8,9 @@ export default {
 <template>
     Item --> {{ item }} <br><br>
 </template>
+
+<style>
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+</style>
