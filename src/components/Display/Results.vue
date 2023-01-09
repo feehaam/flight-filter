@@ -2,7 +2,16 @@
 import Row from "./Row.vue";
 export default {
   name: "Results",
-  props: ["flightData"],
+  props: [
+    "flightData",
+    "tripType",
+    "inputFrom",
+    "inputTo",
+    "inputStartDate",
+    "inputReturnDate",
+    "inputStartTime",
+    "inputReturnTime",
+  ],
   components: {
     Row,
   },
@@ -10,6 +19,9 @@ export default {
     getFresh(flightOffer) {
       let unifiedData = [];
       let ptr = 0;
+      // Extra space for round trip checkings
+      let allData = [];
+      let adPtr = 0;
 
       let price = flightOffer.price;
       let seat = flightOffer.seat;
@@ -30,24 +42,65 @@ export default {
             let carrierCode = segments[l].carrierCode;
             let flightNumber = segments[l].flightNumber;
             let aircraft = segments[l].aircraft;
-            
-            unifiedData[ptr++] = {
-              price: price,
-              seat: seat[j][k],
-              class: clas[j][k],
-              fareBasis: fareBasis[j][k],
-              duration: duration,
-              departurePlace: departurePlace,
-              departureTime: departureTime,
-              arrivalPlace: arrivalPlace,
-              arrivalTime: arrivalTime,
-              marketingCarrier: marketingCarrier,
-              carrierCode: carrierCode,
-              flightNumber: flightNumber,
-              aircraft: aircraft,
+
+            let canAdd = true;
+            if ((this.inputFrom != null) & (this.inputFrom.length > 0)) {
+              if (!departurePlace.includes(this.inputFrom)) canAdd = false;
+            }
+            if ((this.inputTo != null) & (this.inputTo.length > 0)) {
+              if (!arrivalPlace.includes(this.inputTo)) canAdd = false;
+            }
+            if (
+              (this.inputStartDate != null) &
+              (this.inputStartDate.length > 0)
+            ) {
+              if (!departureTime.includes(this.inputStartDate)) canAdd = false;
+            }
+            if (this.inputStartTime != null && this.inputStartTime.length > 0) {
+              let depTime = departureTime.substring(
+                11,
+                departureTime.length - 6
+              );
+              let inDepTime = this.inputStartTime.substring(0, 2);
+              if (depTime !== inDepTime) canAdd = false;
+            }
+
+            let flight = {
+                price: price,
+                seat: seat[j][k],
+                class: clas[j][k],
+                fareBasis: fareBasis[j][k],
+                duration: duration,
+                departurePlace: departurePlace,
+                departureTime: departureTime,
+                arrivalPlace: arrivalPlace,
+                arrivalTime: arrivalTime,
+                marketingCarrier: marketingCarrier,
+                carrierCode: carrierCode,
+                flightNumber: flightNumber,
+                aircraft: aircraft,
             };
+            if (canAdd)
+              unifiedData[ptr++] = flight;
+            allData[adPtr++] = flight;
           }
         }
+      }
+
+      if (this.tripType === "round") {
+        let roundOnlyFlights = [];
+        let rrPtr = 0;
+        for (let i = 0; i < unifiedData.length; i++) {
+          let ac = unifiedData[i].aircraft;
+          for(let j=0; j<allData.length; j++){
+            if(allData[j].aircraft === ac && allData[j].departurePlace === this.inputTo && allData[j].arrivalPlace === this.inputFrom){
+              roundOnlyFlights[rrPtr++] = unifiedData[i];
+              roundOnlyFlights[rrPtr++] = allData[j];
+              break;
+            }
+          }
+        }
+        return roundOnlyFlights;
       }
 
       return unifiedData;
@@ -57,12 +110,11 @@ export default {
 </script>
 
 <template>
+  {{ tripType }}
   <div v-for="(flightOffer, x) in flightData" :key="x">
     <div v-for="(fresh, y) in getFresh(flightOffer)" :key="y">
-        {{ fresh }}
-        <br><br>
+      {{ fresh }}
+      <br /><br />
     </div>
-
-    <hr />
   </div>
 </template>
