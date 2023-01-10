@@ -4,6 +4,7 @@ import Results from "../Display/Results.vue";
 
 export default {
   name: "Search",
+  //All necessary data
   data() {
     return {
       flightData: JsonFileData.flightOffer,
@@ -20,6 +21,7 @@ export default {
   },
   methods: {
     searchData() {
+      // Collecting input from form
       let from = document.getElementById("from").value;
       let to = document.getElementById("to").value;
       let startDate = document.getElementById("start_date").value;
@@ -27,6 +29,7 @@ export default {
       let startTime = document.getElementById("start_time").value;
       let returnTime = document.getElementById("return_time").value;
 
+      // Responses, in case of invalid inputs
       if(from == null || from.length == 0) {
         alert("Type deperture location.");
         return;
@@ -65,6 +68,8 @@ export default {
         return;
       }
     },
+    
+    // Changing the trip type
     changeType(type) {
       this.tripType = type;
       if (type === "round") this.extraButtons = false;

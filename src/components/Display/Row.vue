@@ -1,9 +1,11 @@
 <script>
+// A row display component.
 export default {
   name: "Row",
-  props: ["item", "tickets"],
+  props: ["item"],
   methods: {
     select(){
+        // An simple alert message to display what the user has chosen. 
         alert("SELECTED FLIGHT \n--------------------\n"
         +"From: "+this.item.departurePlace+"\n"
         +"To: "+this.item.arrivalPlace+"\n"

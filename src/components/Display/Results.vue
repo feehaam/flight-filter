@@ -2,6 +2,7 @@
 import Row from "./Row.vue";
 export default {
   name: "Results",
+  // All required data
   props: [
     "flightData",
     "tripType",
@@ -13,6 +14,7 @@ export default {
     "inputReturnTime",
   ],
   components: {
+    // Each of the data fow will be displaye using this component
     Row,
   },
   methods: {
@@ -30,6 +32,7 @@ export default {
       let fareBasis = flightOffer.fareBasis;
       let itineraries = flightOffer.itineraries;
 
+      // A four level loop to extract information. It doesn't take any extra time O(n).
       for (let j = 0; j < seat.length; j++) {
         for (let k = 0; k < seat[j].length; k++) {
           let segments = itineraries[j].segments;
@@ -88,6 +91,11 @@ export default {
         }
       }
 
+      // As far as I've tested and checked, I didn't find round trip data. Though it may exist or not in given json.
+      // However, I wrote this portion to show round trip flights as a pair (from->to) then (to->from)
+      // [ALGO] for all trips from source to destination
+      //           if the plane comes back from destination to source
+      //               add it as a round trip
       if (this.tripType === "round") {
         let roundOnlyFlights = [];
         let rrPtr = 0;
