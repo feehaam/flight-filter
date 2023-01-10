@@ -113,6 +113,42 @@ export default {
 <template>
   {{ tripType === 'round' ? "Please select one way trip!" : "" }}
   {{ tripType === 'multi' ? "Please select one way trip!" : "" }}
+
+  <div class="mycont border rounded-md shadow-md p-2 mb-5 py-6 bg-gray-200">
+    <div class="myitem hover:bg-gray-300 hover:cursor-grab">
+        FLIGHT
+    </div>
+    <div class="myitem hover:bg-gray-300 hover:cursor-grab">
+        AC.
+    </div>
+    <div class="myitem hover:bg-gray-300 hover:cursor-grab">
+        CLASS
+    </div>
+    <div class="myitem hover:bg-gray-300 hover:cursor-grab">
+        FARE B.
+    </div>
+    <div class="myitem hover:bg-gray-300 hover:cursor-grab">
+        ROUTE
+    </div>
+    <div class="myitem hover:bg-gray-300 hover:cursor-grab">
+        DEPARTURE TIME
+    </div>
+    <div class="myitem hover:bg-gray-300 hover:cursor-grab">
+        ARRIVAL TIME
+    </div>
+    <div class="myitem hover:bg-gray-300 hover:cursor-grab">
+        DURATION
+    </div>
+    <div class="myitem hover:bg-gray-300 hover:cursor-grab">
+        PRICE
+    </div>
+    <div class="myitem hover:bg-gray-300 hover:cursor-grab">
+        BUY
+    </div>
+    
+    
+  </div>
+
   <div v-for="(flightOffer, x) in flightData" :key="x">
     <div v-for="(fresh, y) in getFresh(flightOffer)" :key="y">
       <Row :item="fresh" />
@@ -125,4 +161,9 @@ export default {
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.mycont{
+    display: flex;
+    justify-content: space-around;
+}
 </style>
